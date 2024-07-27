@@ -1,8 +1,30 @@
 import { Button } from "antd";
-import { TypeBlog } from "../../../../store/reducers/blogSlice";
+import { deleteBlog } from "../../../../store/reducers/blogSlice";
 import moment from "moment";
+import { useDispatch } from "react-redux";
 
-const Blog = ({ id, title, url, description, date }: TypeBlog) => {
+export type TypeBlogInit = {
+  id: string;
+  title: string;
+  url: string;
+  description: string;
+  date: string;
+  handleEditingBlog: (id: string) => void;
+};
+
+const Blog = ({
+  id,
+  title,
+  url,
+  description,
+  date,
+  handleEditingBlog,
+}: TypeBlogInit) => {
+  const dispatch = useDispatch();
+  const handleDeleteBlog = (blogId: string) => {
+    dispatch(deleteBlog(blogId));
+  };
+
   return (
     <div
       key={id}
@@ -23,8 +45,11 @@ const Blog = ({ id, title, url, description, date }: TypeBlog) => {
         </div>
 
         <div className="flex gap-5">
-          <Button type="primary">Edit</Button>
-          <Button type="default" danger>
+          <Button type="primary" onClick={() => handleEditingBlog(id)}>
+            Edit
+          </Button>
+
+          <Button type="default" danger onClick={() => handleDeleteBlog(id)}>
             Delete
           </Button>
         </div>
